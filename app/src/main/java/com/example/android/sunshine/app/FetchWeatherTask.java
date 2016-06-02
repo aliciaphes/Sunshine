@@ -8,17 +8,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+
+import android.net.Uri;
+
 
 /**
  * Created by ALiciaP on 01-Jun-16.
  */
-public class FetchWeatherTask extends AsyncTask<Void, Void, Void> {
+public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
     private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
     @Override
-    protected Void doInBackground(Void... params) {
+    protected Void doInBackground(String... params) {
         // These two need to be declared outside the try/catch
         // so that they can be closed in the finally block.
         HttpURLConnection urlConnection = null;
@@ -34,11 +38,10 @@ public class FetchWeatherTask extends AsyncTask<Void, Void, Void> {
 
         try {
             // Construct the URL for the OpenWeatherMap query
-            // Possible parameters are available at OWM's forecast API page, at
-            // http://openweathermap.org/API#forecast
+            // Possible parameters are available at http://openweathermap.org/API#forecast
 
-            //http://api.openweathermap.org/data/2.5/forecast/city?id=524901&APPID=1111111111
-            URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=94043&mode=json&units=metric&cnt=7");
+            URL url = buildURL(params[0]);//cityID
+
 
             // Create the request to OpenWeatherMap, and open the connection
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -89,6 +92,39 @@ public class FetchWeatherTask extends AsyncTask<Void, Void, Void> {
             }
         }
         return null;
+    }
+
+    private URL buildURL(String cityID) {
+
+        //String apikey = "1111111"; //recover from properties file
+
+        String format = "json";
+        String units = "metric";
+        int numDays = 7;
+
+        final String FORECAST_BASE_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?";
+        final String QUERY_PARAM = "q";
+        final String FORMAT_PARAM = "mode";
+        final String UNITS_PARAM = "units";
+        final String DAYS_PARAM = "cnt";
+        final String APPID_PARAM = "APPID";
+
+        Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
+                .appendQueryParameter(QUERY_PARAM, cityID)
+                .appendQueryParameter(FORMAT_PARAM, format)
+                .appendQueryParameter(UNITS_PARAM, units)
+                .appendQueryParameter(DAYS_PARAM, Integer.toString(numDays))
+                //.appendQueryParameter(APPID_PARAM, BuildConfig.OPEN_WEATHER_MAP_API_KEY)
+                .build();
+
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return url;
     }
 
 
