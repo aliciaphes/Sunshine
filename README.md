@@ -1,2 +1,2 @@
 # Sunshine
-Workingrepository for the Android fundamentals Udacity course
+Working repository for the Android fundamentals Udacity course
