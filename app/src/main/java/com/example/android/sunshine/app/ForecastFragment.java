@@ -24,10 +24,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -58,15 +56,18 @@ public class ForecastFragment extends Fragment {
                 "Sun 6/29 - Sunny - 20/7"
         };
 
+        new FetchWeatherTask().execute("Boston");//check if we can use zipcode
 
-        List<String> weekForecast = new ArrayList<String>(Arrays.asList(data));
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        //List<String> weekForecast = new ArrayList<String>(Arrays.asList(data));
+
 
         mForecastAdapter = new ArrayAdapter<String>(
                 getActivity(),
                 R.layout.list_item_forecast,
                 R.id.list_item_forecast_textview,
-                weekForecast);
+                new ArrayList<String>());//weekForecast
+
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         // Get a reference to the ListView, and attach this adapter to it.
         ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
@@ -306,7 +307,7 @@ public class ForecastFragment extends Fragment {
             if (strings != null) {
                 mForecastAdapter.clear();
                 for (String dayForecastStr : strings) {
-                    mForecastAdapter.add(dayForecastStr);
+                    mForecastAdapter.add(dayForecastStr);//or addAll for Honeycomb or above
                 }
             }
         }
