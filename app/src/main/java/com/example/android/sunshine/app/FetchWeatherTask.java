@@ -1,5 +1,6 @@
 package com.example.android.sunshine.app;
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -11,15 +12,13 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import android.net.Uri;
-
-
 /**
  * Created by ALiciaP on 01-Jun-16.
  */
 public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
     private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
+
 
     @Override
     protected Void doInBackground(String... params) {
@@ -34,7 +33,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
         //CHECK IF THERE IS ACTUALLY A NETWORK CONNECTION: wifi/4g/etc
 
 
-        Log.v(LOG_TAG, "alipe");
+        //Log.v(LOG_TAG, "alipe");
 
         try {
             // Construct the URL for the OpenWeatherMap query
@@ -96,13 +95,12 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
     private URL buildURL(String cityID) {
 
-        //String apikey = "1111111"; //recover from properties file
-
         String format = "json";
         String units = "metric";
         int numDays = 7;
 
-        final String FORECAST_BASE_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?";
+        final String FORECAST_BASE_URL =
+                "http://api.openweathermap.org/data/2.5/forecast/daily?";
         final String QUERY_PARAM = "q";
         final String FORMAT_PARAM = "mode";
         final String UNITS_PARAM = "units";
@@ -114,16 +112,16 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
                 .appendQueryParameter(FORMAT_PARAM, format)
                 .appendQueryParameter(UNITS_PARAM, units)
                 .appendQueryParameter(DAYS_PARAM, Integer.toString(numDays))
-                //.appendQueryParameter(APPID_PARAM, BuildConfig.OPEN_WEATHER_MAP_API_KEY)
+                .appendQueryParameter(APPID_PARAM, BuildConfig.OPEN_WEATHER_MAP_API_KEY)
                 .build();
 
-
         URL url = null;
-        try {
+        try{
             url = new URL(builtUri.toString());
-        } catch (MalformedURLException e) {
+        }catch (MalformedURLException e){
             e.printStackTrace();
         }
+
         return url;
     }
 

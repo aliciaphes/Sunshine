@@ -71,7 +71,7 @@ public class ForecastFragment extends Fragment {
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
             //kick off fetch weather task:
-            new FetchWeatherTask().execute("4931972");
+            new FetchWeatherTask().execute("4931972");//check if we can use zipcode
         }
         return super.onOptionsItemSelected(item);
     }
