@@ -63,7 +63,11 @@ public class DetailActivity extends AppCompatActivity {
 
             TextView textView = (TextView) rootView.findViewById(R.id.tempText);
 
-            textView.setText(getActivity().getIntent().getStringExtra(Intent.EXTRA_TEXT));
+            Intent detailIntent = getActivity().getIntent();
+
+            if (detailIntent != null && detailIntent.hasExtra(Intent.EXTRA_TEXT))
+                textView.setText(detailIntent.getStringExtra(Intent.EXTRA_TEXT));
+
             return rootView;
         }
     }
