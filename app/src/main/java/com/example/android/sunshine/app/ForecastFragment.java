@@ -1,6 +1,6 @@
 package com.example.android.sunshine.app;
 
-import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,13 +15,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -79,11 +81,12 @@ public class ForecastFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Context context = getActivity();
                 CharSequence text = mForecastAdapter.getItem(position);
-                int duration = Toast.LENGTH_SHORT;
+                //Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
 
-                Toast.makeText(context, text, duration).show();
+                Intent detailIntent = new Intent(getActivity(), DetailActivity.class);
+                detailIntent.putExtra(Intent.EXTRA_TEXT, text);
+                startActivity(detailIntent);
             }
         });
 
@@ -213,16 +216,12 @@ public class ForecastFragment extends Fragment {
 
             //CHECK IF THERE IS ACTUALLY A NETWORK CONNECTION: wifi/4g/etc
 
-            URL url = buildURL(params[0], numDays);//cityID
-
-            //Log.v(LOG_TAG, "URL: " + url);
-
-/*        try {
+            try {
             // Construct the URL for the OpenWeatherMap query
             // Possible parameters are available at http://openweathermap.org/API#forecast
 
-            URL url = buildURL(params[0]);//cityID
-
+                URL url = buildURL(params[0], numDays);//cityID
+                Log.v(LOG_TAG, "URL: " + url);
 
             // Create the request to OpenWeatherMap, and open the connection
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -271,9 +270,12 @@ public class ForecastFragment extends Fragment {
                     Log.e("PlaceholderFragment", "Error closing stream", e);
                 }
             }
-        }*/
+            }
+
+            /*
             forecastJsonStr = "\n" +
                     "{\"city\":{\"id\":4930956,\"name\":\"Boston\",\"coord\":{\"lon\":-71.059769,\"lat\":42.358429},\"country\":\"US\",\"population\":0},\"cod\":\"200\",\"message\":0.0096,\"cnt\":7,\"list\":[{\"dt\":1464969600,\"temp\":{\"day\":19.58,\"min\":17.08,\"max\":22.04,\"night\":18.16,\"eve\":21.78,\"morn\":17.08},\"pressure\":1030.02,\"humidity\":82,\"weather\":[{\"id\":500,\"main\":\"Rain\",\"description\":\"light rain\",\"icon\":\"10d\"}],\"speed\":1.61,\"deg\":83,\"clouds\":88},{\"dt\":1465056000,\"temp\":{\"day\":23.2,\"min\":16.24,\"max\":24.19,\"night\":18.1,\"eve\":22.2,\"morn\":16.24},\"pressure\":1026.46,\"humidity\":68,\"weather\":[{\"id\":500,\"main\":\"Rain\",\"description\":\"light rain\",\"icon\":\"10d\"}],\"speed\":1.02,\"deg\":167,\"clouds\":0,\"rain\":0.31},{\"dt\":1465142400,\"temp\":{\"day\":17.68,\"min\":15.71,\"max\":18.35,\"night\":16.64,\"eve\":16.13,\"morn\":15.89},\"pressure\":1024.15,\"humidity\":84,\"weather\":[{\"id\":502,\"main\":\"Rain\",\"description\":\"heavy intensity rain\",\"icon\":\"10d\"}],\"speed\":3.36,\"deg\":160,\"clouds\":92,\"rain\":18.92},{\"dt\":1465228800,\"temp\":{\"day\":21.81,\"min\":18.28,\"max\":23.3,\"night\":19,\"eve\":23.3,\"morn\":18.28},\"pressure\":1010.59,\"humidity\":75,\"weather\":[{\"id\":500,\"main\":\"Rain\",\"description\":\"light rain\",\"icon\":\"10d\"}],\"speed\":4.22,\"deg\":223,\"clouds\":32,\"rain\":0.41},{\"dt\":1465315200,\"temp\":{\"day\":20.98,\"min\":17.35,\"max\":20.98,\"night\":17.35,\"eve\":17.68,\"morn\":19.35},\"pressure\":1003.68,\"humidity\":0,\"weather\":[{\"id\":501,\"main\":\"Rain\",\"description\":\"moderate rain\",\"icon\":\"10d\"}],\"speed\":1.99,\"deg\":120,\"clouds\":98,\"rain\":4.39},{\"dt\":1465401600,\"temp\":{\"day\":20.98,\"min\":17.93,\"max\":20.98,\"night\":18.53,\"eve\":20.29,\"morn\":17.93},\"pressure\":1003.94,\"humidity\":0,\"weather\":[{\"id\":500,\"main\":\"Rain\",\"description\":\"light rain\",\"icon\":\"10d\"}],\"speed\":5.6,\"deg\":267,\"clouds\":43,\"rain\":0.42},{\"dt\":1465488000,\"temp\":{\"day\":21.07,\"min\":17.92,\"max\":21.41,\"night\":17.92,\"eve\":21.41,\"morn\":18.36},\"pressure\":1008.75,\"humidity\":0,\"weather\":[{\"id\":500,\"main\":\"Rain\",\"description\":\"light rain\",\"icon\":\"10d\"}],\"speed\":5.43,\"deg\":305,\"clouds\":32}]}";
+                    */
 
             try {
                 return getWeatherDataFromJson(forecastJsonStr, numDays);
