@@ -6,4 +6,11 @@
         android:key="@string/pref_location_key"
         android:singleLine="true"
         android:title="@string/pref_location_label" />
+
+    <ListPreference
+        android:entries="@array/opts"
+        android:entryValues="@array/opts_values"
+        android:key="temperature"
+        android:summary="%s"
+        android:title="@string/pref_units_label" />
 </PreferenceScreen>

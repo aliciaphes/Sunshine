@@ -28,19 +28,19 @@ public class SettingsActivity extends PreferenceActivity
         // updated when the preference changes.
         // Add preferences:
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_key)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_units_key)));
     }
 
     /**
      * Attaches a listener so the summary is always updated with the preference value.
      * Also fires the listener once, to initialize the summary (so it shows up before the value
-     * is changed.)
+     * is changed).
      */
     private void bindPreferenceSummaryToValue(Preference preference) {
         // Set the listener to watch for value changes.
         preference.setOnPreferenceChangeListener(this);
 
-        // Trigger the listener immediately with the preference's
-        // current value.
+        // Trigger the listener immediately with the preference's current value.
         onPreferenceChange(preference,
                 PreferenceManager
                         .getDefaultSharedPreferences(preference.getContext())
@@ -65,5 +65,4 @@ public class SettingsActivity extends PreferenceActivity
         }
         return true;
     }
-
 }
