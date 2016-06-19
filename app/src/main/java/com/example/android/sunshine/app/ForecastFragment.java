@@ -41,6 +41,7 @@ public class ForecastFragment extends Fragment {
 
     private ArrayAdapter<String> mForecastAdapter;
 
+
     public ForecastFragment() {
     }
 
@@ -72,7 +73,6 @@ public class ForecastFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CharSequence text = mForecastAdapter.getItem(position);
-                //Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
 
                 Intent detailIntent = new Intent(getActivity(), DetailActivity.class);
                 detailIntent.putExtra(Intent.EXTRA_TEXT, text);
