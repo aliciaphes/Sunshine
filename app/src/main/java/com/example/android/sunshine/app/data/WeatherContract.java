@@ -43,13 +43,10 @@ public class WeatherContract {
 
         //setting to display corresponding image
         public static final String COLUMN_LOCATION_SETTING = "location_setting";
-
         //city name
         public static final String COLUMN_CITY_NAME = "city_name";
-
         //latitude
         public static final String COLUMN_COORD_LAT = "coord_lat";
-
         //longitude
         public static final String COLUMN_COORD_LONG = "coord_long";
     }
